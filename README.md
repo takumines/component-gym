@@ -10,12 +10,12 @@ Reactコンポーネント実装の練習・実験場
 
 ## 🛠 技術スタック
 
-- **React 19.1** - 最新のReact機能を活用
-- **TypeScript 5.9** - 型安全な開発環境
-- **Vite 7** - 高速な開発サーバー
-- **React Compiler** - 自動メモ化による最適化
-- **pnpm** - 効率的なパッケージ管理
-- **ESLint + Prettier** - コード品質と統一性の維持
+- **React 19.1**
+- **TypeScript 5.9**
+- **Vite 7**
+- **React Compiler**
+- **pnpm**
+- **ESLint + Prettier**
 
 ## 📁 ディレクトリ構成
 
