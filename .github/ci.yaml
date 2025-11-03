@@ -1,0 +1,72 @@
+name: CI for Component Gym
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run Prettier Check
+        run: npx prettier . --list-different
+
+      - name: Run ESLint
+        id: eslint
+        run: |
+          npm run lint > eslint.log || true
+
+      - name: Type Check
+        id: typecheck
+        run: |
+          npm run type-check > typecheck.log || true
+
+      - name: Build with Vite
+        run: npm run build-only
+
+      - name: Upload dist folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: vite-build
+          path: dist  # ← ビルド成果物のパス（プロジェクトに合わせて調整）
+
+      - name: Create PR comment body
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "### 🛠️ CI 実行結果" > comment.md
+          echo "- ESLint: \`${{ steps.eslint.outcome }}\`" >> comment.md
+          echo "- Type Check: \`${{ steps.typecheck.outcome }}\`" >> comment.md
+          echo "" >> comment.md
+
+          echo "#### 📝 ESLint 出力" >> comment.md
+          echo '```' >> comment.md
+          head -n 100 eslint.log >> comment.md
+          echo '```' >> comment.md
+
+          echo "" >> comment.md
+          echo "#### 📝 Type Check 出力" >> comment.md
+          echo '```' >> comment.md
+          head -n 100 typecheck.log >> comment.md
+          echo '```' >> comment.md
+
+      - name: Post comment to PR
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: comment.md
