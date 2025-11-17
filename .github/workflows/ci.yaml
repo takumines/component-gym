@@ -14,10 +14,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
@@ -28,15 +34,15 @@ jobs:
       - name: Run ESLint
         id: eslint
         run: |
-          npm run lint > eslint.log || true
+          pnpm run lint > eslint.log || true
 
       - name: Type Check
         id: typecheck
         run: |
-          npm run type-check > typecheck.log || true
+          pnpm run type-check > typecheck.log || true
 
       - name: Build with Vite
-        run: npm run build-only
+        run: pnpm run build-only
 
       - name: Upload dist folder
         uses: actions/upload-artifact@v4
