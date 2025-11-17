@@ -9,16 +9,9 @@
   "arrowParens": "avoid",
   "bracketSpacing": true,
   "jsxSingleQuote": true,
-  "importOrder": [
-    "^react",
-    "^@?\\w",
-    "^[./]"
-  ],
+  "importOrder": ["^react", "^@?\\w", "^[./]"],
   "importOrderSeparation": false,
   "importOrderSortSpecifiers": true,
   "importOrderCaseInsensitive": false,
-  "plugins": [
-    "@trivago/prettier-plugin-sort-imports",
-    "prettier-plugin-tailwindcss"
-  ]
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"]
 }
