@@ -42,7 +42,7 @@ jobs:
           pnpm run type-check > typecheck.log || true
 
       - name: Build with Vite
-        run: pnpm run build-only
+        run: pnpm run build
 
       - name: Upload dist folder
         uses: actions/upload-artifact@v4
